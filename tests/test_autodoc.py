@@ -157,7 +157,7 @@ class TestAutodoc(unittest.TestCase):
         @self.app.route('/needsargs', methods=['GET'])
         @self.autodoc.doc('needs_getargs', getargs={
             'a': 'A Value',
-            'b': 'B Value'  
+            'b': 'B Value'
             })
         def getit():
             return 'I need specific GET parameters.'
@@ -298,4 +298,3 @@ class TestAutodoc(unittest.TestCase):
             self.assertTrue(1 == len(self.autodoc.generate('group1')))
             self.assertTrue(1 == len(self.autodoc.generate('group2')))
             self.assertFalse(1 == len(self.autodoc.generate('group3')))
-
