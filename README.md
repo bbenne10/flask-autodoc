@@ -34,17 +34,27 @@ Start using Flask-Autodoc by importing it and initializing it:
     app = Flask(__name__)
     auto = Autodoc(app)
 
-by default, Flask-Autodoc will only document the routes explicitly decorated with _doc_:
+By default, Flask-Autodoc will only document the routes explicitly decorated with _doc_:
 
     @app.route('/user/<int:id>')
     @auto.doc()
     def show_user(id):
         return user_from_database(id)
 
-to generate the documentation, use the _html()_ method:
+To generate the documentation, use the _html()_ or _json()_ methods:
+
+    def request_wants_json():
+        best = request.accept_mimetypes.best_match(['application/json',
+                                                    'text/html'])
+        return best == 'application/json' and \
+            request.accept_mimetypes[best] > \
+            request.accept_mimetypes['text/html']
 
     @app.route('/documentation')
     def documentation():
+        if request_wants_json():
+            return auto.json()
+
         return auto.html()
 
 ## Custom documentation
