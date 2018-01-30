@@ -5,8 +5,8 @@ import sys
 from collections import defaultdict
 from operator import attrgetter, itemgetter
 
+from flask import current_app, jsonify, render_template, render_template_string
 
-from flask import current_app, render_template, render_template_string
 from jinja2 import evalcontextfilter
 
 
@@ -193,3 +193,27 @@ class Autodoc(object):
                 content = file.read()
                 with current_app.app_context():
                     return render_template_string(content, **context)
+
+    def json(self, groups='all'):
+        """Return a json object with documentation for all the routes specified
+        by the doc() method.
+
+        By specifiying the groups argument, only routes belonging to those
+        groups will be returned.
+        """
+        autodoc = self.generate(groups=groups)
+
+        def endpoint_info(doc):
+            args = doc['args']
+            if args == ['None']:
+                args = []
+
+            return {
+                'args': [(arg, doc['defaults'][arg]) for arg in args],
+                'docstring': doc['docstring'],
+                'methods': sorted(list(doc['methods'])),
+                'rule': doc['rule']
+            }
+
+        data = {'endpoints': [endpoint_info(doc) for doc in autodoc]}
+        return jsonify(data)
