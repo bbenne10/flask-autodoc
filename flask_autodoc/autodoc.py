@@ -29,8 +29,11 @@ class Autodoc(object):
         self.func_groups = defaultdict(set)
         self.func_props = defaultdict()
         self.immutable_props = ['rule', 'endpoint']
-        self.default_props = ['methods', 'docstring', 
-            'args', 'defaults', 'location'] + self.immutable_props
+        self.default_props = ['methods',
+                              'docstring',
+                              'args',
+                              'defaults',
+                              'location'] + self.immutable_props
         self.func_locations = defaultdict(dict)
         if app is not None:
             self.init_app(app)
@@ -43,7 +46,7 @@ class Autodoc(object):
         self.add_custom_template_filters(app)
 
     def teardown(self, exception):
-        ctx = stack.top
+        ctx = stack.top  # noqa
 
     def add_custom_template_filters(self, app):
         """Add custom filters to jinja2 templating engine"""
@@ -81,8 +84,9 @@ class Autodoc(object):
         the generare() function, they will be added to the route's properties,
         which can be accessed from the template.
 
-        If a parameter is passed in with a name that is already in the dict, but
-        not of a reserved name, the passed parameter overrides that dict value.
+        If a parameter is passed in with a name that is already in the dict,
+        but not of a reserved name, the passed parameter overrides that dict
+        value.
         """
         def decorator(f):
             # Get previous group list (if any)
