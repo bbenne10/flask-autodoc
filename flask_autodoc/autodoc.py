@@ -1,9 +1,10 @@
-from operator import attrgetter, itemgetter
+import inspect
 import os
 import re
-from collections import defaultdict
 import sys
-import inspect
+from collections import defaultdict
+from operator import attrgetter, itemgetter
+
 
 from flask import current_app, render_template, render_template_string
 from jinja2 import evalcontextfilter
